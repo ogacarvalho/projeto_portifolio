@@ -1,0 +1,865 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+
+
+/* Antes de qualquer coisa, vamos adicionar um reset para limpar as pré-definições do browser, utilizando a tag "*" que é equivalente ao root. */
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box; 
+/* Essa config serve para considerar as bordas das caixas na somatória total do width não deixando criar relevos/saliências provindas das bordas que por padrão são adicionadas ao tamanho total da caixa.*/
+}
+
+html {
+    font-size: 10px;
+    font-family: "Montserrat", sans-serif;
+    scroll-behavior: smooth; /* Baita atributo bacana que torna o scrolling suave*/
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Após efetuar as configurações iniciais, delimitaremos o container que será a estrutura principal do nosso site. Onde iremos usa-lo em todas as seções */
+.container {
+    min-height: 100vh; 
+/*o tamanho mínimo será 100% do viewport height é sensacional.*/
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    
+}
+
+p {
+    font-size: 1.4rem;
+	margin-top: 5px;
+	line-height: 2.5rem;
+	font-weight: 300;
+	letter-spacing: 0.05rem;
+}
+
+.brand h1 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    color: white;
+}
+
+.brand h1 span {
+    color:crimson;
+}
+
+/* Barra de Navegação */
+#header {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: auto;
+}
+
+#header .header {
+    min-height: 8vh;
+    transition: .3s ease background-color;
+}
+
+#header .nav__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Muitas vezes se faz necessário "lembrar" que a largura será 100% */
+    height: 100%;
+    max-width: 1300px;
+    padding: 0 10px;
+}
+
+#header .nav__list ul {
+    list-style: none;
+    position: absolute;
+    background-color: rgb(31, 30, 30);
+    width: 100vw;
+    height: 100vh;
+    left: 100%;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    overflow-x: hidden; /* Serve para esconder o conteúdo que estoura fora do vw. */
+    transition: 0.5s ease left;
+}
+
+#header .nav__list ul.active {
+    left: 0%;
+}
+
+#header .nav__list a {
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: .2rem;
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    padding: 20px;
+    display: block; /* O ul está como flex, tornando o padding inútil, com o block o valor da linha volta a ser ativo, habilitando o uso de padding. */
+}
+
+#header .nav__list a::after {
+    content: attr(data-after); /* Primeiro adicione o atributo "data-after" no index dessa LI e depois faça o link dela, usando attr(data-after) */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0); /* Esconde */
+    color: rgba(240, 248, 255, 0.021);
+    font-size: 13rem;
+    letter-spacing: 50px;
+    z-index: -1;
+    transition: .4s ease letter-spacing; /* O legal é referênciar para efeitos específicos como o criado pelo "letter-spacing logo abaixo.*/
+}
+
+#header .nav__list li:hover a::after {
+    transform: translate(-50%, -50%) scale(1);
+    letter-spacing: initial;
+}
+
+#header .nav__list li a:hover {
+    color: crimson;
+}
+
+#header .hamburger {
+    height: 60px;
+    width: 60px;
+    display: inline-block;
+    border: 3px solid white;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+    transform: scale(.6); /* Para aumentar ou diminuir o tamanho. */
+    margin-right: 5px;
+}
+
+#header .hamburger::after {
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid white;
+    animation: hamburger__puls 1s ease infinite; /* Configurando animação criada no keyframes. */
+
+}
+
+#header .hamburger .bar {
+    height: 2px;
+    width: 30px;
+    position: relative;
+    background-color: white;
+    z-index: -1;
+}
+
+#header .hamburger .bar::after,
+#header .hamburger .bar::before{
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    background-color: white;
+    transition: .3s ease;
+    transition-property: top, bottom;
+
+}
+
+#header .hamburger .bar::after {
+    top: 8px;
+}
+
+#header .hamburger .bar::before {
+    bottom: 8px;
+}
+
+#header .hamburger.active .bar::before {
+    bottom: 0;
+}
+
+#header .hamburger.active .bar::after {
+    top: 0;
+}
+
+/* Fim da Barra de Navegação */
+
+/* Ínicio da Primeira Seção  */
+#hero {
+    background-image: url(./img/hero-bg.png);
+/* Imagem se adaptará 100% ao vw */
+    background-size: cover;
+    background-position: top center;
+    position: relative; 
+/* A fig ficará Relativa a sua posição inicial */
+    z-index: 1;
+}
+
+/* Criação de camada preta para aumentar contraste */
+#hero::after {
+    content: ''; 
+/* Pode deixar vázio, não afetará. */
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: .7;
+    z-index: -1; 
+/* Posicionar a camada */
+}
+
+#hero .hero {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+    justify-content: flex-start;
+}
+
+#hero h1 {
+    display: block;
+    width: fit-content;
+    font-size: 4rem;
+    position: relative;
+    color: transparent;
+    animation: text_reveal .5s ease forwards;   
+    animation-delay: 1s;
+}
+
+/* Animação para o texto */
+#hero h1:nth-child(1){
+    animation-delay: 1s;
+}
+
+#hero h1:nth-child(2){
+    animation-delay: 2s;
+}
+
+#hero h1:nth-child(3){
+    animation: text_reveal_name .5s ease forwards;  
+    /* Para adicionar a cor vermelha com efeito no "Gabriel" */
+    animation-delay: 3s;
+}
+
+/* Animação para o box  */
+#hero h1:nth-child(1) span {
+    animation-delay: .5s;
+}
+
+#hero h1:nth-child(2) span {
+    animation-delay: 1.5s;
+}
+
+#hero h1:nth-child(3) span {
+    animation-delay: 2.5s;
+}
+
+#hero h1 span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background-color: crimson;
+    animation: text_reveal_box 1s ease;
+    animation-delay: .5s;
+}
+
+.cta {
+    display: inline-block;
+    padding: 10px 30px;
+    color: white;
+    background-color: transparent;
+    border: 2px solid crimson;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: .1rem;
+    margin-top: 36px;
+    transition: .3s ease;
+    transition-property: background-color, color;
+    /* transition-property serve para especificar exatamente a propriedade que sofrerá o efeito */
+}
+
+#hero .cta:hover {
+    color: white;
+    background-color: crimson;
+}
+/* Fim da Primeira Seção */
+
+
+/* Seção de Serviços */
+
+
+/* Aqui estamos tratando da "estrutura" onde ficarão os cards "items" */
+#services .services {
+    flex-direction: column;
+    text-align: center;
+    max-width: 1500px;
+    padding: 100px 0;
+}
+
+.section__title {
+    font-size: 4rem;
+    font-weight: 300;
+    color: black;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: .2rem;
+    text-align: center;
+}
+
+.section__title span {
+    color: crimson;
+}
+
+/* Ajuste Pessoal */
+.services__top {
+    padding-bottom: 100px;  
+    max-width: 750px;
+}
+
+#services .services__top p {
+    font-size: 1.4rem;
+    margin: 5px 30px;
+    line-height: 2.5rem;
+    font-weight: normal;
+    letter-spacing: .05rem;
+    text-align: center;
+    color: black;
+}
+
+#services .services__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#services .services__item {
+    flex-basis: 80%;
+    /* Delimita um tamanho fixo para os itens, semelhante ao width porém feito para items. */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+    border-radius: 10px;
+    background-image: url("img/img-1.png");
+    background-size: cover;
+    margin: 10px 10%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden; /* Remove sobreposição da nova camada que escondia o border-radius. Semelhante ao recorte sobreposto do CDR */
+}
+
+#services .services__item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+    opacity: .8;
+    z-index: -1;
+}
+
+.icon {
+    height: 80px;
+    width: 80px;
+    margin-bottom: 20px;
+
+}
+
+#services .services__item h2 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.services__item p {
+    color: white;
+    text-align: left;
+}
+
+/* Fim da Seção de Serviços */
+
+/* Seção de Projetos */
+
+.projects {
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+.projects__header h1 {
+    margin-bottom: 50px;
+}
+
+/* Alinhamento Geral dos Frames dos Cards */
+.all__projects {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.project__card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%; /* Torna a largura máxima 80% da tela*/
+    margin: 20px auto;
+    overflow: hidden; /* Evitar que a sobreposição da camada apague o border radius */
+    border-radius: 10px;
+    
+}
+
+.project__card-info {
+    padding: 30px;
+    flex-basis: 50%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #8fd3f4;
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+    color: white;
+}
+
+.project__card-info h1 {
+    font-size: 4rem;
+    font-weight: 500;
+}
+
+.project__card-info h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.project__card-img {
+    height: 300px;
+    width: 100%;
+    overflow: hidden;
+    position: relative; /* Posição relativa para validar o overlay */
+
+}
+
+.project__card-img::after {
+    content: '';
+    position: absolute; /* Ao colocar como position, absolute eu posiciono a camada a frente porém para validar é necessário posicionar a outra camada com position: relative */
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+    opacity: .7;
+
+}
+
+.project__card-img img {
+    transition: 0.3s;
+}
+
+.project__card:hover .project__card-img img{
+    transform: scale(1.1);
+}
+
+/* Fim da Seção de Projetos */
+
+/* Seção About */
+
+.about {
+    /* Col-rev pois no HTML está em ordem contrária. */
+    flex-direction: column-reverse; 
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px;
+}
+
+.col__left {
+    width: 250px;
+    height: 360px;
+}
+
+.col__right {
+    width: 100%;
+}
+
+.col__right h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    letter-spacing: .2rem;
+    margin-bottom: 10px;
+}
+
+.col__right p {
+    margin-bottom: 20px;
+}
+
+#about .cta {
+    color: crimson;
+    margin-bottom: 50px;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 2rem;
+}
+
+#about .cta:hover {
+    color: white;
+    background-color: crimson;
+
+}
+
+.about__img {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    border: 10px solid white;
+}
+
+.about__img::after {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 19px;
+    height: 98%;
+    width: 98%;
+    border: 7px solid  crimson;
+    z-index: -1;
+}
+
+/* Fim seção About */
+
+/* Seção Contato */
+
+.contact {
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    background: whitesmoke;
+
+}
+
+.contact__items {
+    width: 400px;
+}
+
+.contact__item {
+    width: 80%;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    padding: 20px 0;
+    justify-content: center;
+    align-items: center; /* Repare na diferença entre Text-Align e align-items*/
+    box-shadow: 0px 0px 18px 0 #0000002c;
+    transition: .2s ease box-shadow; /* É bom sempre referenciar o objeto "box-shadow" para evitar bugs */
+}
+
+.contact__item:hover {
+    box-shadow: 0px 0px 5px 0 #0000002c;
+}
+
+#contact .icon {
+    width: 70px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.contact__info h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.contact__info h2 {
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    font-weight: 500;
+}
+
+
+/* Fim da Seção de Contato */
+
+/* Footer */
+
+#footer {
+    background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+}
+
+.footer {
+    /* Foi colocado min-height pois com os ajustes os icones quebrarão assim fazendo sentido. */
+    min-height: 200px;
+    flex-direction: column;
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+
+.footer h2 {
+    color: white;
+    font-weight: 500;
+    font-size: 1.8rem;
+    letter-spacing: .1rem;
+    margin: 10px 0;
+}
+
+.footer .social__icons {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.footer .social__icon {
+    width: 50px;
+    margin: 0 5px;
+}
+
+/* Efeito no footer */
+.footer .social__icons img {
+    filter: grayscale(1);
+    transition: .3s;
+}
+
+.footer .social__icons img:hover {
+    filter: none;
+}
+
+.footer p {
+    color: white;
+    font-size: 1.2rem;
+}
+
+/* Fim do Footer */
+
+/* Keyframes */
+
+@keyframes hamburger__puls {
+    0%{
+        opacity: 1;
+        transform:  scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes text_reveal_box {
+    50%{
+        width: 100%;
+        left: 0;
+    }
+
+    100%{
+        width: 0;
+        left: 100%;
+    }
+}
+
+@keyframes text_reveal {
+    100% {
+        color: white;
+    }
+    
+}
+
+@keyframes text_reveal_name {
+    100% {
+        color: crimson;
+        font-weight: 500px;
+    }
+    
+}
+
+/* Final dos KeyFrames */
+
+/* Media Query for Tablet */
+@media only screen and (min-width:768px){
+    .cta {
+        font-size: 2.5rem;
+        padding: 20px 60px;
+    }
+    h1 {
+        font-size: 6rem;
+    }
+    .section__title {
+        font-size: 6rem;
+    }
+
+    /* Hero */
+    #hero h1 {
+        font-size: 7rem;
+    }
+    /* End of Hero */
+
+    /* Services */
+
+    #services .services__bottom .services__item {
+        /* Desta forma me possibilita encaixar 2 por tela. (45% e 45%) */
+        flex-basis: 45%;
+        margin: 2.5%;
+        /* Porra meu... por estar display flex, basta dimensiona-los ao tamanho adequado. */
+    }
+    /* End of Services */
+    /* Projects */
+    .project__card {
+        flex-direction: row;
+    }
+
+    .project__card:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    #projects .project__card {
+        height: 400px;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .project__card-info {
+        height: 100%;
+    }
+
+    .project__card-img {
+        height: 100%;
+        width: 50%;
+    }
+    /* End of Projects */
+
+    /* About */
+    .about {
+        flex-direction: row;
+    }
+
+    .about .col__left {
+        width: 600px;
+        height: 400px;
+        padding-left: 60px;
+    }
+
+    .about .col__left .about__img::after {
+        left: -45px;
+        top: 34px;
+        height: 98%;
+        width: 98%;
+        border: 10px solid crimson;
+    }
+
+    .about .col__right {
+        height: 400px;
+        text-align: left;
+        padding: 30px;
+    }
+
+    .about .col__right h1 {
+        text-align: left;
+    }
+    /* End of About */
+
+    /* Contact */
+    #contact .contact {
+		flex-direction: column;
+		padding: 100px 0;
+		align-items: center;
+		justify-content: center;
+		min-width: 20vw;
+	}
+	#contact .contact__items {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		margin: 100px 0;
+	}
+	#contact .contact__item {
+		width: 30%;
+        min-height: 200px;
+		margin: 0;
+	}
+	#contact .contact__item .icon {
+		height: 80px;
+		width: 80px;
+	}
+	#contact .contact__item .icon img {
+		object-fit: contain;
+	}
+    .contact__info {
+		width: 70%;
+		align-items: center;
+	}
+
+    .contact__info h2 {
+		font-size: 1.2rem;
+        font-weight: bold;
+        color: grey;
+	}
+
+    /* End of Contact */
+}
+/* End Media Query for Tablet */
+
+/* Media Query for Desktop */
+@media only screen and (min-width:1200px){
+
+    #header .hamburger {
+        display: none;
+    }
+
+    #header .nav__list ul {
+        position: initial; /* Faz com que o menu apareça. */
+        display: block; /* Remove o flex */
+        height: auto; /* Ajusta a altura ao tamanho da barra de navegação */
+        width: fit-content; /* Ajusta o contéudo da "UL".*/
+        background: transparent;
+
+    }
+
+    #header .nav__list li {
+        display: inline-block;
+    }
+
+    #header .nav__list li a {
+        font-size: 2rem;
+    }
+
+    #header .nav__list ul a::after {
+        display: none;
+    }
+
+
+    #services .services__bottom .services__item {
+        flex-basis: 22%; /* Pois pretendemos dividir os cards em 4 portanto é 25% - margem. */
+        margin: 1.5%;
+    }
+    
+}
+/* End of Media Query for Desktop */
